@@ -16,7 +16,7 @@
 </script>
 
 <nav>
-  <button class="title" on:click={handleClickTitle}>Freedom Hill 4 Ever</button>
+  <button class="title" on:click={handleClickTitle}>Forum House</button>
   {#if !$user}
   <button on:click={handleClickLogin}>Login</button>
   {/if}

@@ -1,6 +1,7 @@
 <script lang='ts'>
   import { currentPost, page, posts, voteTypes, user, users } from "../stores";
   import { getAuthorImageSrc, getAuthorName } from '../util';
+  import EmojiDrawer from "./EmojiDrawer.svelte";
 
   const handleClickPost = (post: any) => {
     $page = "viewPost";
@@ -42,6 +43,17 @@
         ).length
       : 0;
   };
+
+  const togglePostDrawer = (e: any, post: any) => {
+    e.stopPropagation();
+    console.log('hi')
+    if(!post.showDrawer) {
+      post.showDrawer = true;
+    } else {
+      post.showDrawer = false;
+    }
+    $posts = $posts;
+  }
 </script>
 
 <div class="toolbar">
@@ -51,15 +63,18 @@
 
 {#each $posts as post}
   <button class="post" on:click={() => handleClickPost(post)}>
-    <h2>{post.title}</h2>
     <div class="author">
       <!-- svelte-ignore a11y-img-redundant-alt -->
       <img src={getAuthorImageSrc($users, post)} alt="author image" />
       {getAuthorName($users, post)}
     </div>
+    <h2>{post.title}</h2>
     <div class="content">{post.content}</div>
     <div class="voteButtons">
-      <button class='emojiButton'>:)</button>
+      {#if post.showDrawer}
+        <EmojiDrawer post={post} />
+      {/if}
+      <button class='emojiButton' on:click={e => togglePostDrawer(e, post)}>:)</button>
       {#each $voteTypes as voteType}
       {#if getVoteCount(voteType, post) > 0}
         <button on:click={(e) => handleClickVote(e, voteType.name, post)}>
@@ -96,7 +111,12 @@
     cursor: pointer;
   }
 
+  .post h2 {
+    margin-bottom: 20px;
+  }  
+
   .voteButtons {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
@@ -139,7 +159,6 @@
     font-style: italic;
     color: blue;
     margin-bottom: 20px;
-    margin-top: 10px;
     font-size: 20px;
     display: flex;
     align-items: center;

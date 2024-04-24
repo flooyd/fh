@@ -86,7 +86,7 @@
     color: white;
     font-family: "Quattrocento Sans", sans-serif;
     padding: 20px;
-    height: calc(100vh - 56px);
+    height: calc(100vh - 61px);
     overflow-y: auto;
   }
 </style>
