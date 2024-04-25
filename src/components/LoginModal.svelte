@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import {loginOrRegister, user} from "../stores";
+  import {loginOrRegister, refresh, user} from "../stores";
 
   let password = '';
   let displayName = '';
@@ -8,6 +8,7 @@
   let switchText = '';
   let titleText = '';
   let errors: any[] = [];
+  let disabled = false;
 
   const resetFields = () => {
     password = '';
@@ -16,13 +17,11 @@
   }
 
   const handleClickLogin = () => {
-    console.log('login')
     if($loginOrRegister === "login") {
       $loginOrRegister = "register";
     } else {
       $loginOrRegister = "login";
     }
-    console.log($loginOrRegister)
     resetFields();
   }
 
@@ -33,6 +32,7 @@
 
   const handleClickSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
+    disabled = true;
     errors = [];
     const endpoint = $loginOrRegister === "login" ? "login" : "register";
     try {
@@ -60,6 +60,7 @@
       localStorage.setItem("user", JSON.stringify(data.user));
       $loginOrRegister = '';
       resetFields();
+      $refresh = $refresh + 1;
     }
   } catch (err) {
     console.error(err);
@@ -82,7 +83,7 @@ $: titleText = $loginOrRegister === "login" ? "Login" : "Register";
     <input bind:value={displayName} type="text" placeholder="Display Name"/>
     {/if}
     <input bind:value={password} type="password" placeholder="Password"/>
-    <button type="submit" on:click={handleClickSubmit}>Submit</button>
+    <button type="submit" on:click={handleClickSubmit} disabled={disabled}>Submit</button>
   </form>
   <div class="errors">
     {#each errors as error}

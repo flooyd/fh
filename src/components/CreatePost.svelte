@@ -1,10 +1,12 @@
 <script lang='ts'>
-  import { user } from "../stores";
+  import { page, refresh, user } from "../stores";
 
   let title = '';
   let content = '';
+  let disabled = false;
 
   const handleClickSubmit = async (e: { preventDefault: () => void; }) => {
+    disabled = true;
     e.preventDefault();
     const res = await fetch('http://localhost:3000/posts', {
       method: 'POST',
@@ -22,6 +24,8 @@
     const data = await res.json();
     title = '';
     content = '';
+    $refresh = $refresh + 1;
+    $page = 'posts';
   }
 </script>
 
@@ -37,7 +41,7 @@
     Content
     <textarea bind:value={content}></textarea>
   </label>
-  <button type="submit">Submit</button>
+  <button type="submit" disabled={disabled}>Submit</button>
 </form>
 
 <style>

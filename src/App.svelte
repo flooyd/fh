@@ -12,10 +12,13 @@
     voteTypes,
     profileModalOpen,
     users,
+    refresh
   } from "./stores";
   import CreatePost from "./components/CreatePost.svelte";
   import ViewPost from "./components/ViewPost.svelte";
   import ProfileModal from "./components/ProfileModal.svelte";
+
+  let ready = false;
 
   if (localStorage.getItem("user")) {
     const userFromStorage = localStorage.getItem("user");
@@ -23,7 +26,7 @@
       $user = JSON.parse(userFromStorage);
     }
   }
-  
+
   const fetchUsers = async () => {
     const res = await fetch("http://localhost:3000/users", {
       headers: {
@@ -32,21 +35,36 @@
     });
     const data = await res.json();
     $users = data;
-  }
-  onMount(async () => {
+  };
+
+  const fetchPostsAndVotes = async () => {
     const postsRes = await fetch("http://localhost:3000/posts");
     const postsData = await postsRes.json();
+    await getVotes(postsData);
+  };
+
+  const fetchVoteTypes = async () => {
     const voteTypesRes = await fetch("http://localhost:3000/voteTypes");
     const voteTypesData = await voteTypesRes.json();
-    await fetchUsers();
-    console.log($users);
     $voteTypes = voteTypesData;
-    await getVotes(postsData);
+  }
+
+  const init = async () => {
+    if(!$user) return;
+    await fetchVoteTypes();
+    await fetchPostsAndVotes();
+    await fetchUsers();
+  }
+
+  onMount(async () => {
+    await init();
     if (window.location.pathname.includes("/viewPost/")) {
       const postId = window.location.pathname.split("/viewPost/")[1];
       $currentPost = $posts.find((post: any) => post.id === parseInt(postId));
       $page = "viewPost";
     }
+
+    ready = true;
   });
 
   const getVotes = async (postsData: any) => {
@@ -57,28 +75,32 @@
     }
 
     $posts = postsData;
-    console.log($posts)
+    console.log($posts);
   };
+
+  $: $refresh ? init() : null;
 </script>
 
-<Nav />
-<main>
-  {#if $loginOrRegister === "login" || $loginOrRegister === "register"}
-    <LoginModal />
-  {/if}
-  {#if $profileModalOpen}
-    <ProfileModal />
-  {/if}
-  {#if $page === "createPost"}
-    <CreatePost />
-  {/if}
-  {#if $page === "posts"}
-    <Posts />
-  {/if}
-  {#if $page === "viewPost" && $currentPost}
-    <ViewPost />
-  {/if}
-</main>
+{#if ready}
+  <Nav />
+  <main>
+    {#if $loginOrRegister === "login" || $loginOrRegister === "register"}
+      <LoginModal />
+    {/if}
+    {#if $profileModalOpen}
+      <ProfileModal />
+    {/if}
+    {#if $page === "createPost"}
+      <CreatePost />
+    {/if}
+    {#if $page === "posts" && $user}
+      <Posts />
+    {/if}
+    {#if $page === "viewPost" && $currentPost}
+      <ViewPost />
+    {/if}
+  </main>
+{/if}
 
 <style>
   main {

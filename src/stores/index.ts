@@ -16,5 +16,6 @@ const posts: Writable<any[]> = writable([]); // Array of posts
 const currentPost: Writable<any> = writable(null); // Current post
 const user: Writable<any> = writable(null);
 const users: Writable<any[]> = writable([]); // Array of users
+const refresh: Writable<number> = writable(0);
 
-export { theme, posts, loginOrRegister, voteTypes, user, page, currentPost, profileModalOpen, users}
+export { theme, posts, loginOrRegister, voteTypes, user, page, currentPost, profileModalOpen, users, refresh}

@@ -77,7 +77,6 @@ button:hover {
 h1 {
   font-size: 25px;
   font-weight: bold;
-  border-bottom: 3px solid white;
   width: fit-content;
 }
 
