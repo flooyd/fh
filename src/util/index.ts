@@ -35,9 +35,13 @@ const handleClickVote = async (e: any, voteTypeName: string, post: any, user: an
   console.log(data, 'dataaa');
   //vote comes back from server with id === null if it was removed
   if(data.id === null) {
-    //remove vote from array where voteType is equal to voteTypeName and userId is equal to $user.id 
-    post.votes = post.votes.filter((vote: { voteType: string, userId: string }) => vote.voteType !== voteTypeName && vote.userId !== user.id);
-    console.log(post.votes, 'post.votes');
+    //remove vote from post where userId === user.id and voteType === voteTypeName
+    post.votes.map((vote: any) => {
+      if(vote.userId === user.id && vote.voteType === voteTypeName) {
+        post.votes.splice(post.votes.indexOf(vote), 1);
+      }
+    });
+
   } else {
     post.votes.push(data);
   }
