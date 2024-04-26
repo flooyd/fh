@@ -31,7 +31,7 @@
   }
 
   const handleClickSubmit = async (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
+    console.log('submit')
     disabled = true;
     errors = [];
     const endpoint = $loginOrRegister === 'login' ? 'login' : 'register';
@@ -55,6 +55,7 @@
       if(typeof data.message === 'string') {
         errors = [errors];
       }
+      disabled = false;
     } else {
       $user = data.user;
       localStorage.setItem('user', JSON.stringify(data.user));

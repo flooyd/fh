@@ -28,8 +28,9 @@
     }
   }
 
-  //if window.location.pathname includes 'onrender' then set fetchUrl to 'https://fhnest.onrender.com/'
-  if (window.location.pathname.includes('vercel')) {
+  console.log(window.location);
+  //if window.location.href includes 'onrender' then set fetchUrl to 'https://fhnest.onrender.com/'
+  if (window.location.href.includes('vercel')) {
     $fetchUrl = 'https://fhnest.onrender.com/';
   }
 
