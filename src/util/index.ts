@@ -1,8 +1,6 @@
 import { posts, fetchUrl, user, currentPost, page } from '../stores'
 import { get } from 'svelte/store'
 
-const url = get(fetchUrl);
-
 const getAuthorName = (users: any[], post: { userId: any }) => {
   const author = users.find(user => user.id === post.userId)
   return author ? author.user.displayName : 'Unknown'
@@ -22,6 +20,7 @@ const getVoteCount = (voteType: { name: any }, post: any) => {
 };
 
 const handleClickVote = async (e: any, voteTypeName: string, post: any, user: any) => {
+  const url = get(fetchUrl);
   e.stopPropagation();
   const res = await fetch(
     `${url}/votes/posts/${post.id}/${voteTypeName}`,
@@ -46,6 +45,7 @@ const handleClickVote = async (e: any, voteTypeName: string, post: any, user: an
 };
 
 const deletePost = async (post: any) => {
+  const url = get(fetchUrl);
   const res = await fetch(`${url}/posts/${post.id}`, {
     method: "DELETE",
     headers: {
