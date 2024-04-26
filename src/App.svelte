@@ -43,6 +43,7 @@
     });
     const data = await res.json();
     $users = data;
+    console.log($users, 'fetch Users');
   };
 
   const fetchPostsAndVotes = async () => {
