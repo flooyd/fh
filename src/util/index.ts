@@ -7,8 +7,8 @@ const getAuthorName = (users: any[], post: { authorId: any }) => {
   return author ? author.user.displayName : 'Unknown'
 }
 
-const getAuthorImageSrc = (users: any[], post: { userId: any }) => {
-  const author = users.find(user => user.id === post.userId)
+const getAuthorImageSrc = (users: any[], post: { authorId: any }) => {
+  const author = users.find(user => user.id === post.authorId)
   return author?.user.image ? author.user.image : 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/SNice.svg/800px-SNice.svg.png'
 }
 
