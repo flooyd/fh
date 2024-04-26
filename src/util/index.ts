@@ -1,8 +1,8 @@
 import { posts, fetchUrl, user, currentPost, page } from '../stores'
 import { get } from 'svelte/store'
 
-const getAuthorName = (users: any[], post: { userId: any }) => {
-  const author = users.find(user => user.id === post.userId)
+const getAuthorName = (users: any[], post: { authorId: any }) => {
+  const author = users.find(user => user.id === post.authorId)
   console.log(author, 'getAuthorName');
   return author ? author.user.displayName : 'Unknown'
 }
