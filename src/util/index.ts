@@ -1,4 +1,7 @@
-import { posts } from "../stores"
+import { posts, fetchUrl, user, currentPost, page } from '../stores'
+import { get } from 'svelte/store'
+
+const url = get(fetchUrl);
 
 const getAuthorName = (users: any[], post: { userId: any }) => {
   const author = users.find(user => user.id === post.userId)
@@ -7,7 +10,6 @@ const getAuthorName = (users: any[], post: { userId: any }) => {
 
 const getAuthorImageSrc = (users: any[], post: { userId: any }) => {
   const author = users.find(user => user.id === post.userId)
-  console.log(['author', author])
   return author?.user.image ? author.user.image : 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/SNice.svg/800px-SNice.svg.png'
 }
 
@@ -22,11 +24,11 @@ const getVoteCount = (voteType: { name: any }, post: any) => {
 const handleClickVote = async (e: any, voteTypeName: string, post: any, user: any) => {
   e.stopPropagation();
   const res = await fetch(
-    `http://localhost:3000/votes/posts/${post.id}/${voteTypeName}`,
+    `${url}/votes/posts/${post.id}/${voteTypeName}`,
     {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     }
   );
@@ -40,10 +42,25 @@ const handleClickVote = async (e: any, voteTypeName: string, post: any, user: an
   }
 
   posts.update(posts => posts);
+  currentPost.update(currentPost => post);
+};
+
+const deletePost = async (post: any) => {
+  const res = await fetch(`${url}/posts/${post.id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${get(user).token}`,
+    },
+  });
+  if (res.status === 200) {
+    posts.update(posts => posts.filter(p => p.id !== post.id));
+    currentPost.update(currentPost => null);
+    page.update(page => 'posts');
+  }
 };
 
 const toggleEmojiDrawer = (e: any, post: any) => {
-  console.log(posts);
+  console.log(post);
   e.stopPropagation();
   if(!post.showDrawer) {
     post.showDrawer = true;
@@ -51,6 +68,7 @@ const toggleEmojiDrawer = (e: any, post: any) => {
     post.showDrawer = false;
   }
   posts.update(posts => posts);
+  currentPost.update(currentPost => post);
 }
 
-export { getAuthorName, getAuthorImageSrc, getVoteCount, toggleEmojiDrawer, handleClickVote }
+export { getAuthorName, getAuthorImageSrc, getVoteCount, toggleEmojiDrawer, handleClickVote, deletePost }

@@ -1,48 +1,59 @@
-<script lang='ts'>
-  import { page, refresh, user } from "../stores";
+<script lang="ts">
+  import { fly } from "svelte/transition";
+  import { page, refresh, user, fetchUrl } from "../stores";
+  import { onMount } from "svelte";
 
-  let title = '';
-  let content = '';
+  let title = "";
+  let content = "";
   let disabled = false;
+  let ready = false;
 
-  const handleClickSubmit = async (e: { preventDefault: () => void; }) => {
+  onMount(() => {
+    ready = true;
+  });
+
+  const handleClickSubmit = async (e: { preventDefault: () => void }) => {
     disabled = true;
     e.preventDefault();
-    const res = await fetch('http://localhost:3000/posts', {
-      method: 'POST',
+    const res = await fetch(`${$fetchUrl}/posts`, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         post: {
           title,
           content,
-          authorId: $user.id
-        }
-      })
+          authorId: $user.id,
+        },
+      }),
     });
     const data = await res.json();
-    title = '';
-    content = '';
+    title = "";
+    content = "";
     $refresh = $refresh + 1;
-    $page = 'posts';
-  }
+    $page = "posts";
+  };
 </script>
 
-<div class="toolbar">
-  <h1>Create Post</h1>
-</div>
-<form on:submit={handleClickSubmit}>
-  <label>
-    Title
-    <input type="text" bind:value={title} />
-  </label>
-  <label>
-    Content
-    <textarea bind:value={content}></textarea>
-  </label>
-  <button type="submit" disabled={disabled}>Submit</button>
-</form>
+{#if ready}
+  <div transition:fly={{ x: -20 }}>
+    <div class="toolbar">
+      <h1>Create Post</h1>
+    </div>
+    <form on:submit={handleClickSubmit}>
+      <label>
+        Title
+        <input type="text" bind:value={title} />
+      </label>
+      <label>
+        Content
+        <textarea bind:value={content}></textarea>
+      </label>
+      <button type="submit" {disabled}>Submit</button>
+    </form>
+  </div>
+{/if}
 
 <style>
   .toolbar {
@@ -62,7 +73,8 @@
     font-weight: bold;
   }
 
-  input, textarea {
+  input,
+  textarea {
     padding: 5px;
   }
 </style>

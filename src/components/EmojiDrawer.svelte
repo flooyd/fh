@@ -1,11 +1,11 @@
 <script>
-  import { voteTypes } from "../stores";
+  import { voteTypes } from '../stores';
   //based copilot recommended prop post and now as i'm typing it gives me prop
   export let post;
   //kappa
 </script>
 
-<div class="emojiDrawer">
+<div class='emojiDrawer'>
   {#each $voteTypes as voteType}
     <img src={voteType.src} alt={voteType.name} title={voteType.name} />
   {/each}

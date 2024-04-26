@@ -1,6 +1,6 @@
-<script lang="ts">
-  import { fade } from "svelte/transition";
-  import {loginOrRegister, refresh, user} from "../stores";
+<script lang='ts'>
+  import { fade } from 'svelte/transition';
+  import {loginOrRegister, refresh, user, fetchUrl} from '../stores';
 
   let password = '';
   let displayName = '';
@@ -17,10 +17,10 @@
   }
 
   const handleClickLogin = () => {
-    if($loginOrRegister === "login") {
-      $loginOrRegister = "register";
+    if($loginOrRegister === 'login') {
+      $loginOrRegister = 'register';
     } else {
-      $loginOrRegister = "login";
+      $loginOrRegister = 'login';
     }
     resetFields();
   }
@@ -34,12 +34,12 @@
     e.preventDefault();
     disabled = true;
     errors = [];
-    const endpoint = $loginOrRegister === "login" ? "login" : "register";
+    const endpoint = $loginOrRegister === 'login' ? 'login' : 'register';
     try {
-      const res = await fetch(`http://localhost:3000/users/${endpoint}`, {
-      method: "POST",
+      const res = await fetch(`${$fetchUrl}/users/${endpoint}`, {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         user: {
@@ -52,12 +52,12 @@
     const data = await res.json();
     if (data.message) {
       errors = data.message;
-      if(typeof data.message === "string") {
+      if(typeof data.message === 'string') {
         errors = [errors];
       }
     } else {
       $user = data.user;
-      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem('user', JSON.stringify(data.user));
       $loginOrRegister = '';
       resetFields();
       $refresh = $refresh + 1;
@@ -67,25 +67,25 @@
   }
 }
 
-$: switchText = $loginOrRegister === "login" ? "Register" : "Login";
-$: titleText = $loginOrRegister === "login" ? "Login" : "Register";
+$: switchText = $loginOrRegister === 'login' ? 'Register' : 'Login';
+$: titleText = $loginOrRegister === 'login' ? 'Login' : 'Register';
 </script>
 
-<div class="loginModal">
- <div class="title">
+<div class='loginModal'>
+ <div class='title'>
   <h1>{titleText}</h1>
   <button on:click={handleClickLogin}>{switchText}</button>
   <button on:click={handleClickClose}>X</button>
  </div>
   <form>
-    <input bind:value={username} type="text" placeholder="Username (used only to login)"/>
-    {#if $loginOrRegister === "register"}
-    <input bind:value={displayName} type="text" placeholder="Display Name"/>
+    <input bind:value={username} type='text' placeholder='Username (used only to login)'/>
+    {#if $loginOrRegister === 'register'}
+    <input bind:value={displayName} type='text' placeholder='Display Name'/>
     {/if}
-    <input bind:value={password} type="password" placeholder="Password"/>
-    <button type="submit" on:click={handleClickSubmit} disabled={disabled}>Submit</button>
+    <input bind:value={password} type='password' placeholder='Password'/>
+    <button type='submit' on:click={handleClickSubmit} disabled={disabled}>Submit</button>
   </form>
-  <div class="errors">
+  <div class='errors'>
     {#each errors as error}
       <p>{error}</p>
     {/each}

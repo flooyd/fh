@@ -1,46 +1,68 @@
-<script lang='ts'>
-    import { getAuthorImageSrc, getAuthorName, getVoteCount, toggleEmojiDrawer, handleClickVote } from '../util';
-    import {users, voteTypes, user, page, currentPost} from '../stores';
-    import EmojiDrawer from './EmojiDrawer.svelte';
+<script lang="ts">
+  import {
+    getAuthorImageSrc,
+    getAuthorName,
+    getVoteCount,
+    toggleEmojiDrawer,
+    handleClickVote,
+    deletePost,
+  } from "../util";
+  import { users, voteTypes, user, page, currentPost } from "../stores";
+  import EmojiDrawer from "./EmojiDrawer.svelte";
 
-    export let post: any;
+  export let post: any;
+  export let viewPost = false;
 
-    const handleClickPost = () => {
+  const handleClickPost = () => {
+    if(viewPost) return;
     $page = "viewPost";
     $currentPost = post;
     const windowState = {
       title: post.title,
-      url: `/viewPost/${post.id}`
-    }
+      url: `/viewPost/${post.id}`,
+    };
     window.history.pushState(windowState, post.title, windowState.url);
-  }
+  };
+
+  const handleClickDelete = (e: { stopPropagation: () => void; }) => {
+    e.stopPropagation();
+    deletePost(post);
+  };
+
+  const getStyle = () => {
+    if (viewPost) {
+      return 'cursor: default';
+    }
+    return {};
+  };
 </script>
 
-<button class='post' on:click={handleClickPost}>
-    <div class='author'>
-        <img src={getAuthorImageSrc($users, post)} alt='author' />
-        {getAuthorName($users, post)}
-    </div>
-    <h2>{post.title}</h2>
-    <div class='content'>{post.content}</div>
-    <div class="voteButtons">
-        {#if post.showDrawer}
-          <EmojiDrawer post={post} />
-        {/if}
-        <button class='emojiButton' on:click={e => toggleEmojiDrawer(e, post)}>:)</button>
-        {#each $voteTypes as voteType}
-        
-          <button on:click={(e) => handleClickVote(e, voteType.name, post, $user)}>
-            <img src={voteType.src} alt={voteType.name} />
-            {getVoteCount(voteType, post)}
-          </button>
-        
-      {/each}
-      </div>
+<button class="post" on:click={handleClickPost} style={`${getStyle()}`}>
+  <div class="author">
+    <img src={getAuthorImageSrc($users, post)} alt="author" />
+    {getAuthorName($users, post)}
+  </div>
+  <h2>{post.title}</h2>
+  <div class="content">{post.content}</div>
+  <div class="voteButtons">
+    {#if post.showDrawer}
+      <EmojiDrawer {post} />
+    {/if}
+    <button class="emojiButton" on:click={(e) => toggleEmojiDrawer(e, post)}
+      >:)</button
+    >
+    {#each $voteTypes as voteType}
+      <button on:click={(e) => handleClickVote(e, voteType.name, post, $user)}>
+        <img src={voteType.src} alt={voteType.name} />
+        {getVoteCount(voteType, post)}
+      </button>
+    {/each}
+  </div>
+  <button class='deleteButton' on:click={(e) => handleClickDelete(e)}>🗑️</button>
 </button>
 
 <style>
-    .post {
+  .post {
     margin-bottom: 20px;
     padding: 10px;
     background: white;
@@ -49,6 +71,7 @@
     border: 3px solid black;
     width: 100%;
     text-align: left;
+    position: relative;
   }
 
   .post:hover {
@@ -58,7 +81,7 @@
 
   .post h2 {
     margin-bottom: 20px;
-  }  
+  }
 
   .voteButtons {
     position: relative;
@@ -110,9 +133,24 @@
   }
 
   .author img {
-    width: 64px;
-    height: 64px;
+    width: 75px;
+    height: 75px;
     border-radius: 180px;
     margin-right: 10px;
+  }
+
+  .deleteButton {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: white;
+    font-size: 25px;
+    border-color: black;
+  }
+
+  .deleteButton:hover {
+    background: red;
+    color: white;
+    border-color: black;
   }
 </style>

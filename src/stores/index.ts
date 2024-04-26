@@ -17,5 +17,6 @@ const currentPost: Writable<any> = writable(null); // Current post
 const user: Writable<any> = writable(null);
 const users: Writable<any[]> = writable([]); // Array of users
 const refresh: Writable<number> = writable(0);
+const fetchUrl: Writable<string> = writable('http://localhost:3000');
 
-export { theme, posts, loginOrRegister, voteTypes, user, page, currentPost, profileModalOpen, users, refresh}
+export { theme, posts, loginOrRegister, voteTypes, user, page, currentPost, profileModalOpen, users, refresh, fetchUrl}

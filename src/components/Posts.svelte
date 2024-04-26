@@ -1,16 +1,29 @@
 <script lang='ts'>
-  import { page, posts } from "../stores";
-  import Post from "./Post.svelte";
+  import { fly } from 'svelte/transition';
+  import { page, posts } from '../stores';
+  import Post from './Post.svelte';
+  import { onMount } from 'svelte';
+
+  let ready = false;
+
+  onMount(() => {
+    ready = true;
+  });
 </script>
 
-<div class="toolbar">
-  <h1>Posts</h1>
-  <button on:click={() => $page = "createPost"}>Create Post</button>
-</div>
-
-{#each $posts as post}
-  <Post {post} />
-{/each}
+{#if ready}
+  <div transition:fly={{ x: -20 }}>
+    <div class='toolbar'>
+      <h1>Posts</h1>
+      <button on:click={() => ($page = 'createPost')}>Create Post</button>
+    </div>
+    <div>
+      {#each $posts as post}
+        <Post {post} />
+      {/each}
+    </div>
+  </div>
+{/if}
 
 <style>
   .toolbar {

@@ -1,12 +1,12 @@
-<script lang="ts">
-  import { loginOrRegister, user, page, profileModalOpen } from "../stores";
+<script lang='ts'>
+  import { loginOrRegister, user, page, profileModalOpen } from '../stores';
 
   const handleClickLogin = () => {
     $loginOrRegister = 'login';
   }
 
   const handleClickUser = () => {
-    $profileModalOpen = true;
+    $profileModalOpen = !$profileModalOpen;
   }
 
   const handleClickTitle = () => {
@@ -16,7 +16,7 @@
 </script>
 
 <nav>
-  <button class="title" on:click={handleClickTitle}>Forum House</button>
+  <button class='title' on:click={handleClickTitle}>Forum House</button>
   {#if !$user}
   <button on:click={handleClickLogin}>Login</button>
   {/if}
@@ -34,11 +34,11 @@
     background-color: #333;
     color: white;
     border-bottom: 3px solid white;
-    font-family: "Quattrocento", serif;
+    font-family: 'Quattrocento', serif;
   }
 
   button {
-    font-family: "Quattrocento", serif;
+    font-family: 'Quattrocento', serif;
   }
 
   .title {

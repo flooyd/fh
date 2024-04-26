@@ -1,8 +1,8 @@
-<script lang="ts">
-  import { onMount } from "svelte";
-  import LoginModal from "./components/LoginModal.svelte";
-  import Nav from "./components/Nav.svelte";
-  import Posts from "./components/Posts.svelte";
+<script lang='ts'>
+  import { onMount } from 'svelte';
+  import LoginModal from './components/LoginModal.svelte';
+  import Nav from './components/Nav.svelte';
+  import Posts from './components/Posts.svelte';
   import {
     page,
     loginOrRegister,
@@ -12,23 +12,30 @@
     voteTypes,
     profileModalOpen,
     users,
-    refresh
-  } from "./stores";
-  import CreatePost from "./components/CreatePost.svelte";
-  import ViewPost from "./components/ViewPost.svelte";
-  import ProfileModal from "./components/ProfileModal.svelte";
+    refresh,
+    fetchUrl,
+  } from './stores';
+  import CreatePost from './components/CreatePost.svelte';
+  import ViewPost from './components/ViewPost.svelte';
+  import ProfileModal from './components/ProfileModal.svelte';
 
   let ready = false;
 
-  if (localStorage.getItem("user")) {
-    const userFromStorage = localStorage.getItem("user");
+  if (localStorage.getItem('user')) {
+    const userFromStorage = localStorage.getItem('user');
     if (userFromStorage) {
       $user = JSON.parse(userFromStorage);
     }
   }
 
+  //if window.location.pathname includes 'onrender' then set fetchUrl to 'https://fhnest.onrender.com/'
+  if (window.location.pathname.includes('vercel')) {
+    $fetchUrl = 'https://fhnest.onrender.com/';
+  }
+
   const fetchUsers = async () => {
-    const res = await fetch("http://localhost:3000/users", {
+    console.log('token', $user.token)
+    const res = await fetch(`${$fetchUrl}/users`, {
       headers: {
         Authorization: `Bearer ${$user.token}`,
       },
@@ -38,13 +45,13 @@
   };
 
   const fetchPostsAndVotes = async () => {
-    const postsRes = await fetch("http://localhost:3000/posts");
+    const postsRes = await fetch(`${$fetchUrl}/posts`);
     const postsData = await postsRes.json();
     await getVotes(postsData);
   };
 
   const fetchVoteTypes = async () => {
-    const voteTypesRes = await fetch("http://localhost:3000/voteTypes");
+    const voteTypesRes = await fetch(`${$fetchUrl}/voteTypes`);
     const voteTypesData = await voteTypesRes.json();
     $voteTypes = voteTypesData;
   }
@@ -58,10 +65,10 @@
 
   onMount(async () => {
     await init();
-    if (window.location.pathname.includes("/viewPost/")) {
-      const postId = window.location.pathname.split("/viewPost/")[1];
+    if (window.location.pathname.includes('/viewPost/')) {
+      const postId = window.location.pathname.split('/viewPost/')[1];
       $currentPost = $posts.find((post: any) => post.id === parseInt(postId));
-      $page = "viewPost";
+      $page = 'viewPost';
     }
 
     ready = true;
@@ -69,7 +76,7 @@
 
   const getVotes = async (postsData: any) => {
     for (let post of postsData) {
-      const res = await fetch(`http://localhost:3000/votes/posts/${post.id}`);
+      const res = await fetch(`${$fetchUrl}/votes/posts/${post.id}`);
       const data = await res.json();
       post.votes = data.votes;
     }
@@ -84,19 +91,19 @@
 {#if ready}
   <Nav />
   <main>
-    {#if $loginOrRegister === "login" || $loginOrRegister === "register"}
+    {#if $loginOrRegister === 'login' || $loginOrRegister === 'register'}
       <LoginModal />
     {/if}
     {#if $profileModalOpen}
       <ProfileModal />
     {/if}
-    {#if $page === "createPost"}
+    {#if $page === 'createPost'}
       <CreatePost />
     {/if}
-    {#if $page === "posts" && $user}
+    {#if $page === 'posts' && $user}
       <Posts />
     {/if}
-    {#if $page === "viewPost" && $currentPost}
+    {#if $page === 'viewPost' && $currentPost}
       <ViewPost />
     {/if}
   </main>
@@ -106,7 +113,7 @@
   main {
     background: #333;
     color: white;
-    font-family: "Quattrocento Sans", sans-serif;
+    font-family: 'Quattrocento Sans', sans-serif;
     padding: 20px;
     height: calc(100vh - 61px);
     overflow-y: auto;
