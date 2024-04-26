@@ -36,6 +36,7 @@ const handleClickVote = async (e: any, voteTypeName: string, post: any, user: an
   if(data.id === null) {
     //remove vote from array where voteType is equal to voteTypeName and userId is equal to $user.id 
     post.votes = post.votes.filter((vote: { voteType: any, userId: any }) => vote.voteType !== voteTypeName || vote.userId !== user.id);
+    get(posts).find(p => p.id === post.id).votes = post.votes;
   } else {
     post.votes.push(data);
   }
