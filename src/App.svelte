@@ -31,7 +31,7 @@
   console.log(window.location);
   //if window.location.href includes 'onrender' then set fetchUrl to 'https://fhnest.onrender.com/'
   if (window.location.href.includes('vercel')) {
-    $fetchUrl = 'https://fhnest.onrender.com/';
+    $fetchUrl = 'https://fhnest.onrender.com';
   }
 
   const fetchUsers = async () => {
