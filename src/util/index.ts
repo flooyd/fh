@@ -2,15 +2,12 @@ import { posts, fetchUrl, user, currentPost, page } from '../stores'
 import { get } from 'svelte/store'
 
 const getAuthorName = (users: any[], post: { authorId: any }) => {
-  console.log('post', post)
-  console.log('users', users)
-  const author = users.find(user => user.id === post.authorId)
-  console.log(author, 'getAuthorName');
+  const author = users.find(user => user.user.id === post.authorId)
   return author ? author.user.displayName : 'Unknown'
 }
 
 const getAuthorImageSrc = (users: any[], post: { authorId: any }) => {
-  const author = users.find(user => user.id === post.authorId)
+  const author = users.find(user => user.user.id === post.authorId)
   return author?.user.image ? author.user.image : 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/SNice.svg/800px-SNice.svg.png'
 }
 
