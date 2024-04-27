@@ -42,7 +42,7 @@ const handleClickVote = async (e: any, voteTypeName: string, post: any, user: an
         post.votes.splice(post.votes.indexOf(vote), 1);
       }
     });
-
+    get(posts).find((p: any) => p.id === post.id).votes = post.votes;
   } else {
     post.votes.push(data);
   }
