@@ -12,6 +12,7 @@
 
   export let post: any;
   export let viewPost = false;
+  let disableButtons = false;
 
   const handleClickPost = () => {
     if(viewPost) return;
@@ -35,6 +36,12 @@
     }
     return {};
   };
+
+  const handleVote = async (e: MouseEvent & { currentTarget: EventTarget & HTMLButtonElement; }, voteType: string, post: any, user: any) => {
+    disableButtons = true;
+    await handleClickVote(e, voteType, post, user, disableButtons);
+    disableButtons = false;
+  }
 </script>
 
 <button class="post" on:click={handleClickPost} style={`${getStyle()}`}>
@@ -52,7 +59,7 @@
       >:)</button
     >
     {#each $voteTypes as voteType}
-      <button on:click={(e) => handleClickVote(e, voteType.name, post, $user)}>
+      <button disabled={disableButtons} on:click={(e) => handleVote(e, voteType.name, post, $user)}>
         <img src={voteType.src} alt={voteType.name} />
         {getVoteCount(voteType, post)}
       </button>
