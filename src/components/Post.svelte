@@ -25,9 +25,11 @@
     window.history.pushState(windowState, post.title, windowState.url);
   };
 
-  const handleClickDelete = (e: { stopPropagation: () => void; }) => {
+  const handleClickDelete = async (e: { stopPropagation: () => void; }) => {
+    disableButtons = true;
     e.stopPropagation();
-    deletePost(post);
+    await deletePost(post);
+    disableButtons = false;
   };
 
   const getStyle = () => {
@@ -65,7 +67,7 @@
       </button>
     {/each}
   </div>
-  <button class='deleteButton' on:click={(e) => handleClickDelete(e)}>🗑️</button>
+  <button class='deleteButton' on:click={(e) => handleClickDelete(e)} disabled={disableButtons}>🗑️</button>
 </button>
 
 <style>
