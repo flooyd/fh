@@ -28,6 +28,7 @@ const handleClickVote = async (e: any, voteTypeName: string, post: any, user: an
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${user.token}`,
       },
     }
   );
