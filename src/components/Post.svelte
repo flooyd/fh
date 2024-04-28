@@ -18,11 +18,8 @@
     if(viewPost) return;
     $page = "viewPost";
     $currentPost = post;
-    const windowState = {
-      title: post.title,
-      url: `/viewPost/${post.id}`,
-    };
-    window.history.pushState(windowState, post.title, windowState.url);
+    window.history.pushState({}, '', `/viewPost/${post.id}`);
+    document.title = 'Forum House - ' + post.title;
   };
 
   const handleClickDelete = async (e: { stopPropagation: () => void; }) => {

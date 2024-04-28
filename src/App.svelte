@@ -61,19 +61,17 @@
   const init = async () => {
     if(!$user) return;
     await fetchVoteTypes();
-    await fetchPostsAndVotes();
     await fetchUsers();
-  }
-
-  onMount(async () => {
-    await init();
-
+    await fetchPostsAndVotes();
     if (window.location.pathname.includes('/viewPost/')) {
       const postId = window.location.pathname.split('/viewPost/')[1];
       $currentPost = $posts.find((post: any) => post.id === parseInt(postId));
       $page = 'viewPost';
     }
+  }
 
+  onMount(async () => {
+    await init();
     ready = true;
   });
 

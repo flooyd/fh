@@ -10,7 +10,9 @@
   }
 
   const handleClickTitle = () => {
-    window.history.pushState({}, '', '/');
+    window.history.pushState({...window.history.state, prevPage: $page}, '', '/');
+    document.title = 'Forum House';
+    console.log(window.history)
     $page = 'posts';
   }
 </script>

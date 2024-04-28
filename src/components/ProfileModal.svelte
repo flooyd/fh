@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { profileModalOpen, user, fetchUrl } from "../stores";
+  import { profileModalOpen, user, fetchUrl, refresh, page, currentPost } from "../stores";
   import { fly } from "svelte/transition";
 
   let displayName = $user.displayName || "";
@@ -34,8 +34,9 @@
 
         const data = await res.json();
         $user = data.user;
-        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("user", JSON.stringify($user));
         $profileModalOpen = false;
+        $refresh = $refresh + 1;
       }}
     >
       <h1>Edit Profile</h1>
@@ -58,7 +59,14 @@
         localStorage.removeItem("user");
         $user = null;
         $profileModalOpen = false;
-      }}
+        $page = "posts";
+        $currentPost = null;
+      const windowState = {
+        title: 'Forum House',
+        url: '/',
+      };
+      window.history.pushState(windowState, 'Forum House', windowState.url);
+  }}
     >
       <button type="submit">Logout</button>
     </form>
@@ -77,7 +85,7 @@
     height: calc(100vh - 81px);
     overflow-y: auto;
     width: 350px;
-    z-index: 2;
+    z-index: 5;
     display: flex;
     flex-direction: column;
   }
