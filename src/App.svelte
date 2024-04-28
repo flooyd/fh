@@ -33,7 +33,6 @@
   }
 
   const fetchUsers = async () => {
-    console.log('token', $user.token)
     const res = await fetch(`${$fetchUrl}/users`, {
       headers: {
         Authorization: `Bearer ${$user.token}`,
@@ -41,7 +40,6 @@
     });
     const data = await res.json();
     $users = data.users;
-    console.log($users, 'fetch Users');
   };
 
   const fetchPostsAndVotes = async () => {
@@ -51,7 +49,6 @@
       },
     });
     const postsData = await postsRes.json();
-    console.log('pdata', postsData)
     await getVotes(postsData);
   };
 

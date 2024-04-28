@@ -2,15 +2,12 @@ import { posts, fetchUrl, user, currentPost, page } from '../stores'
 import { get } from 'svelte/store'
 
 const getAuthorName = (users: any[], post: { authorId: any }) => {
-  console.log('users', users)
   const author = users.find(user => user.id === post.authorId)
-  console.log('author', author)
   return author ? author.displayName : 'Unknown'
 }
 
 const getAuthorImageSrc = (users: any[], post: { authorId: any }) => {
   const author = users.find(user => user.id === post.authorId)
-  console.log('author', author)
   return author.image ? author.image : 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/SNice.svg/800px-SNice.svg.png'
 }
 
@@ -36,7 +33,6 @@ const handleClickVote = async (e: any, voteTypeName: string, post: any, user: an
     }
   );
   const data = await res.json();
-  console.log(data, 'dataaa');
   //vote comes back from server with id === null if it was removed
   if(data.id === null) {
     //remove vote from post where userId === user.id and voteType === voteTypeName
@@ -70,7 +66,6 @@ const deletePost = async (post: any) => {
 };
 
 const toggleEmojiDrawer = (e: any, post: any) => {
-  console.log(post);
   e.stopPropagation();
   if(!post.showDrawer) {
     post.showDrawer = true;
