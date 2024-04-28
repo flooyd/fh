@@ -67,7 +67,9 @@
       </button>
     {/each}
   </div>
-  <button class='deleteButton' on:click={(e) => handleClickDelete(e)} disabled={disableButtons}>🗑️</button>
+  {#if $user && $user.id === post.authorId}
+    <button class="deleteButton" on:click={handleClickDelete}>🗑️</button>
+  {/if}
 </button>
 
 <style>

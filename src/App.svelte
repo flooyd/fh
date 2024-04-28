@@ -28,8 +28,6 @@
     }
   }
 
-  console.log(window.location);
-  //if window.location.href includes 'onrender' then set fetchUrl to 'https://fhnest.onrender.com/'
   if (window.location.href.includes('vercel')) {
     $fetchUrl = 'https://fhnest.onrender.com';
   }
@@ -42,13 +40,18 @@
       },
     });
     const data = await res.json();
-    $users = data;
+    $users = data.users;
     console.log($users, 'fetch Users');
   };
 
   const fetchPostsAndVotes = async () => {
-    const postsRes = await fetch(`${$fetchUrl}/posts`);
+    const postsRes = await fetch(`${$fetchUrl}/posts`, {
+      headers: {
+        Authorization: `Bearer ${$user.token}`,
+      },
+    });
     const postsData = await postsRes.json();
+    console.log('pdata', postsData)
     await getVotes(postsData);
   };
 
@@ -67,6 +70,7 @@
 
   onMount(async () => {
     await init();
+
     if (window.location.pathname.includes('/viewPost/')) {
       const postId = window.location.pathname.split('/viewPost/')[1];
       $currentPost = $posts.find((post: any) => post.id === parseInt(postId));
@@ -84,7 +88,6 @@
     }
 
     $posts = postsData;
-    console.log($posts);
   };
 
   $: $refresh ? init() : null;
