@@ -28,6 +28,8 @@
     }
   }
 
+  window.history.pushState('posts', '', '');
+
   if (window.location.href.includes('vercel')) {
     $fetchUrl = 'https://fhnest.onrender.com';
   }
