@@ -16,9 +16,10 @@
 
   const handleClickPost = () => {
     if(viewPost) return;
+    window.history.pushState(`/viewPost/${post.id}`, '', `/viewPost/${post.id}`)
+    console.log(window.history);
     $page = "viewPost";
     $currentPost = post;
-    window.history.pushState({}, '', `/viewPost/${post.id}`);
     document.title = 'Forum House - ' + post.title;
   };
 

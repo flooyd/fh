@@ -31,7 +31,6 @@
   }
 
   const handleClickSubmit = async (e: { preventDefault: () => void; }) => {
-    console.log('submit')
     disabled = true;
     errors = [];
     const endpoint = $loginOrRegister === 'login' ? 'login' : 'register';

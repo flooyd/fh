@@ -39,7 +39,7 @@
       },
     });
     const data = await res.json();
-    $users = data.users;
+    $users = data;
   };
 
   const fetchPostsAndVotes = async () => {
@@ -86,6 +86,26 @@
   };
 
   $: $refresh ? init() : null;
+
+  window.onpopstate = (e) => {
+    console.log(e.state)
+    if (e.state === '/') {
+      $page = 'posts';
+      document.title = 'Forum House';
+    }
+    if(e.state.includes('viewPost')) {
+      const postId = e.state.split('/viewPost/')[1];
+      console.log(postId, window.history.state)
+      $currentPost = $posts.find((post: any) => post.id === parseInt(postId));
+      $page = 'viewPost';
+      document.title = 'Forum House - ' + $currentPost.title;
+    }
+    if(e.state === 'createPost') {
+      console.log('blah')
+      $page = 'createPost';
+      document.title = 'Forum House - Create Post';
+    }
+  }
 </script>
 
 {#if ready}
