@@ -12,7 +12,6 @@
 
   const handleClickCreatePost = () => {
     window.history.pushState(`createPost`, '', `createPost`)
-    console.log(window.history);
     $page = "createPost";
     document.title = 'Forum House - ' + 'Create Post';
   }
