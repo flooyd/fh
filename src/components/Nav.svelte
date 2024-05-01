@@ -12,7 +12,6 @@
   const handleClickTitle = () => {
     if($page === 'posts') return;
     window.history.pushState('posts', '', '/');
-    console.log(window);
     $page = 'posts';
   }
 </script>
@@ -43,9 +42,16 @@
     font-family: 'Quattrocento', serif;
   }
 
+  button:hover {
+    background: yellow;
+    color: black;
+  }
+
   .title {
     font-size: 25px;
     font-weight: bold;
     border: none;
+    background: #333;
+    color: white;
   }
 </style>

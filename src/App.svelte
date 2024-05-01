@@ -69,7 +69,6 @@
       $page = 'viewPost';
     } else {
       window.history.replaceState('posts', '', '/');
-      console.log('init');
     }
   }
 

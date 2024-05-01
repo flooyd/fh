@@ -60,18 +60,18 @@ a {
 }
 
 button {
-  background: #333;
-  color: white;
-  border: 3px solid white;
+  background: white;
+  color: black;
+  border: 1px solid black;
   border-radius: 5px;
-  padding: 5px;
+  padding: 2.5px;
   cursor: pointer;
 }
 
 button:hover {
-  background: white;
-  color: black;
-  border-color: yellow;
+  background: blue;
+  color: white;
+  border-color: black;
 }
 
 h1 {

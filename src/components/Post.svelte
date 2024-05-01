@@ -15,15 +15,18 @@
   let disableButtons = false;
 
   const handleClickPost = () => {
-    if(viewPost) return;
-    window.history.pushState(`/viewPost/${post.id}`, '', `/viewPost/${post.id}`)
-    console.log(window.history);
+    if (viewPost) return;
+    window.history.pushState(
+      `/viewPost/${post.id}`,
+      "",
+      `/viewPost/${post.id}`,
+    );
     $page = "viewPost";
     $currentPost = post;
-    document.title = 'Forum House - ' + post.title;
+    document.title = "Forum House - " + post.title;
   };
 
-  const handleClickDelete = async (e: { stopPropagation: () => void; }) => {
+  const handleClickDelete = async (e: { stopPropagation: () => void }) => {
     disableButtons = true;
     e.stopPropagation();
     await deletePost(post);
@@ -32,48 +35,72 @@
 
   const getStyle = () => {
     if (viewPost) {
-      return 'cursor: default';
+      return "cursor: default";
     }
     return {};
   };
 
-  const handleVote = async (e: MouseEvent & { currentTarget: EventTarget & HTMLButtonElement; }, voteType: string, post: any, user: any) => {
+  const handleVote = async (
+    e: MouseEvent & { currentTarget: EventTarget & HTMLButtonElement },
+    voteType: string,
+    post: any,
+    user: any,
+  ) => {
     disableButtons = true;
     await handleClickVote(e, voteType, post, user, disableButtons);
     disableButtons = false;
-  }
+  };
+
+  const getDateString = (date: string | number | Date) => {
+    //convert date to mm/dd/yyyy
+    const d = new Date(date);
+    return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+  };
 </script>
 
 <button class="post" on:click={handleClickPost} style={`${getStyle()}`}>
   <div class="author">
-    <img src={getAuthorImageSrc($users, post)} alt="author" />
-    {getAuthorName($users, post)}
+    <div class="authorInfo">
+      <img src={getAuthorImageSrc($users, post)} alt="author" />
+      {getAuthorName($users, post)}
+    </div>
+    <div class="dates">
+      <div class="createdAt">Created: {getDateString(post.createdAt)}</div>
+      <div class="updatedAt">Last Updated: {getDateString(post.updatedAt)}</div>
+    </div>
   </div>
   <h2>{post.title}</h2>
   <div class="content">{post.content}</div>
-  <div class="voteButtons">
+  <div class="bottomRow">
     {#if post.showDrawer}
       <EmojiDrawer {post} />
     {/if}
-    <button class="emojiButton" on:click={(e) => toggleEmojiDrawer(e, post)}
-      >:)</button
-    >
+    <div class="voteButtons">
+      <button class="emojiButton" on:click={(e) => toggleEmojiDrawer(e, post)}
+        >:)</button
+      >
     {#each $voteTypes as voteType}
-      <button disabled={disableButtons} on:click={(e) => handleVote(e, voteType.name, post, $user)}>
+        <button
+        disabled={disableButtons}
+        on:click={(e) => handleVote(e, voteType.name, post, $user)}
+      >
         <img src={voteType.src} alt={voteType.name} />
         {getVoteCount(voteType, post)}
       </button>
     {/each}
-  </div>
-  {#if $user && $user.id === post.authorId}
+    </div>
+    {#if $user && $user.id === post.authorId}
+    <div class="options">
+      <button class="editButton">Edit</button>
     <button class="deleteButton" on:click={handleClickDelete}>🗑️</button>
+    </div>
   {/if}
 </button>
 
 <style>
   .post {
     margin-bottom: 20px;
-    padding: 10px;
+    padding: 5px;
     background: white;
     color: black;
     border-radius: 5px;
@@ -89,42 +116,54 @@
   }
 
   .post h2 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    font-size: 15px;
   }
 
-  .voteButtons {
+  .bottomRow {
     position: relative;
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
     margin-top: 20px;
     align-items: center;
+    justify-content: space-between
   }
 
-  .voteButtons .emojiButton {
+  .bottomRow .emojiButton {
     background: #333;
     color: white;
     border: 3px solid yellow;
     border-radius: 180px;
     padding: 10px;
     height: 32px;
-    margin-right: 15px;
+    margin-right: 0px;
+    display: flex;
+    align-items: center;
   }
 
-  .voteButtons .emojiButton:hover {
+  .bottomRow .emojiButton:hover {
     background: white;
     color: black;
+  }
+
+  .voteButtons {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    flex-wrap: wrap;
   }
 
   .voteButtons button {
     background: white;
     border: 1px solid black;
     border-radius: 5px;
-    padding: 5px;
+    padding: 2.5px;
     display: flex;
     gap: 5px;
     align-items: center;
     color: black;
+    font-size: 15px;
   }
 
   .voteButtons button img {
@@ -136,30 +175,53 @@
     font-style: italic;
     color: blue;
     margin-bottom: 20px;
-    font-size: 20px;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .authorInfo {
     display: flex;
     align-items: center;
   }
 
   .author img {
-    width: 75px;
-    height: 75px;
+    width: 25px;
+    height: 25px;
     border-radius: 180px;
     margin-right: 10px;
   }
 
-  .deleteButton {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    background: white;
-    font-size: 25px;
-    border-color: black;
+  .deleteButton,
+  .editButton {
+    height: 26.6px;
+  }
+
+  .editButton {
+    right: 40px;
+  }
+
+  .options {
+    display: flex;
+    gap: 5px;
   }
 
   .deleteButton:hover {
     background: red;
     color: white;
-    border-color: black;
+  }
+
+  .editButton:hover {
+    background: blue;
+    color: white;
+  }
+
+  .createdAt,
+  .updatedAt {
+    font-size: 12px;
+    color: grey;
   }
 </style>

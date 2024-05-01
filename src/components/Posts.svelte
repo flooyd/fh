@@ -38,4 +38,8 @@
     align-items: center;
     margin-bottom: 20px;
   }
+
+  button {
+    border-width: 1px;
+  }
 </style>
