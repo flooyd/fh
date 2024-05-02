@@ -33,6 +33,17 @@
     disableButtons = false;
   };
 
+  const handleClickEdit = () => {
+    window.history.pushState(
+      `/editPost/${post.id}`,
+      "",
+      `/editPost/${post.id}`,
+    );
+    $page = "editPost";
+    $currentPost = post;
+    document.title = "Forum House - Edit Post";
+  };
+
   const getStyle = () => {
     if (viewPost) {
       return "cursor: default";
@@ -52,10 +63,10 @@
   };
 
   const getDateString = (date: string | number | Date) => {
-    //convert date to mm/dd/yyyy
+    //convert date to mm/dd/yyyy - hh:mm:ss
     const d = new Date(date);
-    return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
-  };
+    return d.toLocaleDateString() + " - " + d.toLocaleTimeString();
+};
 </script>
 
 <button class="post" on:click={handleClickPost} style={`${getStyle()}`}>
@@ -91,7 +102,7 @@
     </div>
     {#if $user && $user.id === post.authorId}
     <div class="options">
-      <button class="editButton">Edit</button>
+      <button class="editButton" on:click={handleClickEdit}>Edit</button>
     <button class="deleteButton" on:click={handleClickDelete}>🗑️</button>
     </div>
   {/if}

@@ -3,8 +3,10 @@
   import { page, refresh, user, fetchUrl } from "../stores";
   import { onMount } from "svelte";
 
-  let title = "";
-  let content = "";
+  export let post: any = null;
+  export let isEdit = false;
+  let title = post ? post.title : "";
+  let content = post ? post.content : "";
   let disabled = false;
   let ready = false;
 
@@ -14,7 +16,15 @@
 
   const handleClickSubmit = async (e: { preventDefault: () => void }) => {
     disabled = true;
+    if(isEdit) {
+      await editPost();
+    } else {
+      await createPost();
+    }
     e.preventDefault();
+  };
+
+  const createPost = async () => {
     const res = await fetch(`${$fetchUrl}/posts`, {
       method: "POST",
       headers: {
@@ -34,13 +44,34 @@
     content = "";
     $refresh = $refresh + 1;
     $page = "posts";
-  };
+  }
+
+  const editPost = async () => {
+    const res = await fetch(`${$fetchUrl}/posts/${post.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${$user.token}`,
+      },
+      body: JSON.stringify({
+        post: {
+          title,
+          content,
+        },
+      }),
+    });
+    const data = await res.json();
+    title = "";
+    content = "";
+    $refresh = $refresh + 1;
+    $page = "posts";
+  }
 </script>
 
 {#if ready}
   <div transition:fly={{ x: -20 }}>
     <div class="toolbar">
-      <h1>Create Post</h1>
+      <h1>{isEdit ? 'Edit' : 'Create'}</h1>
     </div>
     <form on:submit={handleClickSubmit}>
       <label>

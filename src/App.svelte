@@ -126,6 +126,9 @@
     {#if $page === 'viewPost' && $currentPost}
       <ViewPost />
     {/if}
+    {#if $page === 'editPost' && $currentPost}
+      <CreatePost post={$currentPost} isEdit={true} />
+    {/if}
   </main>
 {/if}
 
