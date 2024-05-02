@@ -115,7 +115,6 @@
 </script>
 
 <Nav />
-{#if ready}
   <main>
     {#if $loginOrRegister === 'login' || $loginOrRegister === 'register'}
       <LoginModal />
@@ -136,10 +135,6 @@
       <CreatePost post={$currentPost} isEdit={true} />
     {/if}
   </main>
-{/if}
-{#if !ready}
-<h1>Loading...</h1>
-{/if}
 
 <style>
   main {
