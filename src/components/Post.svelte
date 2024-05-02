@@ -68,7 +68,7 @@
     };
   </script>
   
-  <button class="post" on:click={handleClickPost} style={`${getStyle()}`}>
+  <button id={post.id} class="post" on:click={handleClickPost} style={`${getStyle()}`}>
     <div class="author">
       <div class="authorInfo">
         <img src={getAuthorImageSrc($users, post)} alt="author" />
