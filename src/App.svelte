@@ -105,6 +105,12 @@
       $page = 'createPost';
       document.title = 'Forum House - Create Post';
     }
+    if(e.state.includes('editPost')) {
+      const postId = e.state.split('/editPost/')[1];
+      $currentPost = $posts.find((post: any) => post.id === parseInt(postId));
+      $page = 'editPost';
+      document.title = 'Forum House - Edit Post';
+    }
   }
 </script>
 
