@@ -123,6 +123,7 @@
     .post:hover {
       background: #ccc;
       cursor: pointer;
+      color: black;
     }
   
     .post h2 {
