@@ -63,7 +63,6 @@
   };
 
   const getDateString = (date: string | number | Date) => {
-    //convert date to mm/dd/yyyy - hh:mm:ss
     const d = new Date(date);
     return d.toLocaleDateString() + " - " + d.toLocaleTimeString();
 };

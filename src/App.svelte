@@ -115,31 +115,32 @@
 </script>
 
 <Nav />
-{#if ready}
 <main>
-  {#if $loginOrRegister === "login" || $loginOrRegister === "register"}
-    <LoginModal />
+  {#if !ready}
+    <h1>Loading...</h1>
   {/if}
-  {#if $profileModalOpen}
-    <ProfileModal />
-  {/if}
-  {#if $page === "createPost"}
-    <CreatePost />
-  {/if}
-  {#if $page === "posts" && $user}
-    <Posts />
-  {/if}
-  {#if $page === "viewPost" && $currentPost}
-    <ViewPost />
-  {/if}
-  {#if $page === "editPost" && $currentPost}
-    <CreatePost post={$currentPost} isEdit={true} />
+  {#if ready}
+    {#if $loginOrRegister === "login" || $loginOrRegister === "register"}
+      <LoginModal />
+    {/if}
+    {#if $profileModalOpen}
+      <ProfileModal />
+    {/if}
+    {#if $page === "createPost"}
+      <CreatePost />
+    {/if}
+    {#if $page === "posts" && $user}
+      <Posts />
+    {/if}
+    {#if $page === "viewPost" && $currentPost}
+      <ViewPost />
+    {/if}
+    {#if $page === "editPost" && $currentPost}
+      <CreatePost post={$currentPost} isEdit={true} />
+    {/if}
   {/if}
 </main>
-{/if}
-{#if !ready}
-  <h1>Loading...</h1>
-{/if}
+
 <style>
   main {
     background: #333;
@@ -153,5 +154,6 @@
   h1 {
     margin-top: 20px;
     margin-left: 20px;
+    color: white;
   }
 </style>
