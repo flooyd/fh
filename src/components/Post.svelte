@@ -110,10 +110,10 @@
 
 <style>
   .post {
-    margin-bottom: 20px;
-    padding: 5px;
-    background: white;
-    color: black;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #333;
+    color: white;
     border-radius: 5px;
     border: 3px solid black;
     width: 100%;
@@ -122,7 +122,7 @@
   }
 
   .post:hover {
-    background: #ccc;
+    background: #111;
     cursor: pointer;
   }
 
@@ -232,7 +232,6 @@
 
   .createdAt,
   .updatedAt {
-    font-size: 12px;
-    color: grey;
+    font-size: 10px;
   }
 </style>
