@@ -1,8 +1,8 @@
 <script lang='ts'>
   import { fly } from 'svelte/transition';
   import { page, posts } from '../stores';
-  import Post from './Post.svelte';
   import { onMount } from 'svelte';
+  import Post from './Post.svelte'
 
   let ready = false;
 
