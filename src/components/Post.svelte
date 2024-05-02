@@ -121,7 +121,7 @@
     }
   
     .post:hover {
-      background: #111;
+      background: #ccc;
       cursor: pointer;
     }
   
