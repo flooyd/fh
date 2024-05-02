@@ -1,28 +1,37 @@
-<script lang='ts'>
-  import { loginOrRegister, user, page, profileModalOpen } from '../stores';
+<script lang="ts">
+  import { loginOrRegister, user, page, profileModalOpen } from "../stores";
 
   const handleClickLogin = () => {
-    $loginOrRegister = 'login';
-  }
+    $loginOrRegister = "login";
+  };
 
   const handleClickUser = () => {
     $profileModalOpen = !$profileModalOpen;
-  }
+  };
 
   const handleClickTitle = () => {
-    if($page === 'posts') return;
-    window.history.pushState('posts', '', '/');
-    $page = 'posts';
-  }
+    if ($page === "posts") return;
+    window.history.pushState("posts", "", "/");
+    $page = "posts";
+  };
+
+  const handleClickUsers = () => {
+    if ($page === "users") return;
+    window.history.pushState("users", "", "/users");
+    $page = "users";
+  };
 </script>
 
 <nav>
-  <button class='title' on:click={handleClickTitle}>Forum House</button>
+  <button class="title" on:click={handleClickTitle}>Forum House</button>
   {#if !$user}
-  <button on:click={handleClickLogin}>Login</button>
+    <button on:click={handleClickLogin}>Login</button>
   {/if}
   {#if $user}
-  <button on:click={handleClickUser}>{$user.displayName}</button>
+    <div>
+      <button on:click={handleClickUsers}>Users</button>
+      <button on:click={handleClickUser}>{$user.displayName}</button>
+    </div>
   {/if}
 </nav>
 
@@ -35,11 +44,11 @@
     background-color: #333;
     color: white;
     border-bottom: 3px solid white;
-    font-family: 'Quattrocento', serif;
+    font-family: "Quattrocento", serif;
   }
 
   button {
-    font-family: 'Quattrocento', serif;
+    font-family: "Quattrocento", serif;
   }
 
   button:hover {

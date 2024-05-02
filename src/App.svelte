@@ -18,6 +18,7 @@
   import CreatePost from "./components/CreatePost.svelte";
   import ViewPost from "./components/ViewPost.svelte";
   import ProfileModal from "./components/ProfileModal.svelte";
+    import Users from "./components/Users.svelte";
 
   let ready = false;
 
@@ -137,6 +138,9 @@
     {/if}
     {#if $page === "editPost" && $currentPost}
       <CreatePost post={$currentPost} isEdit={true} />
+    {/if}
+    {#if $page === "users"}
+      <Users />
     {/if}
   {/if}
 </main>
