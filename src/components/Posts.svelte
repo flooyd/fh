@@ -1,35 +1,25 @@
-<script lang='ts'>
-  import { fly } from 'svelte/transition';
-  import { page, posts } from '../stores';
-  import { onMount } from 'svelte';
-  import Post from './Post.svelte'
-
-  let ready = false;
-
-  onMount(() => {
-    ready = true;
-  });
+<script lang="ts">
+  import { page, posts } from "../stores";
+  import Post from "./Post.svelte";
 
   const handleClickCreatePost = () => {
-    window.history.pushState(`createPost`, '', `createPost`)
+    window.history.pushState(`createPost`, "", `createPost`);
     $page = "createPost";
-    document.title = 'Forum House - ' + 'Create Post';
-  }
+    document.title = "Forum House - " + "Create Post";
+  };
 </script>
 
-{#if ready}
-  <div transition:fly={{ x: -20 }}>
-    <div class='toolbar'>
-      <h1>Posts</h1>
-      <button on:click={() => handleClickCreatePost()}>Create Post</button>
-    </div>
-    <div>
-      {#each $posts as post}
-        <Post {post} />
-      {/each}
-    </div>
+<div>
+  <div class="toolbar">
+    <h1>Posts</h1>
+    <button on:click={() => handleClickCreatePost()}>Create Post</button>
   </div>
-{/if}
+  <div>
+    {#each $posts as post}
+      <Post {post} />
+    {/each}
+  </div>
+</div>
 
 <style>
   .toolbar {
