@@ -12,6 +12,7 @@ const getAuthorImageSrc = (users: any[], post: { authorId: any }) => {
 }
 
 const getVoteCount = (voteType: { name: any }, post: any) => {
+  if(!voteType) return;
   return post.votes
     ? post.votes.filter(
         (vote: { voteType: any }) => vote.voteType === voteType.name

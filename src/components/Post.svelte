@@ -66,6 +66,8 @@
       const d = new Date(date);
       return d.toLocaleDateString() + " - " + d.toLocaleTimeString();
     };
+
+    console.log(post.votes);
   </script>
   
   <button id={post.id} class="post" on:click={handleClickPost} style={`${getStyle()}`}>
@@ -89,13 +91,10 @@
         <button class="emojiButton" on:click={(e) => toggleEmojiDrawer(e, post)}
           >:)</button
         >
-        {#each $voteTypes as voteType}
-          <button
-            disabled={disableButtons}
-            on:click={(e) => handleVote(e, voteType.name, post, $user)}
-          >
-            <img src={voteType.src} alt={voteType.name} />
-            {getVoteCount(voteType, post)}
+        {#each post.votes as vote}
+          <button disabled={disableButtons} on:click={(e) => handleVote(e, vote.voteType, post, $user)}>
+            <img src={$voteTypes.find((vt) => vt.name === vote.voteType)?.src} alt={vote.voteType} />
+            {getVoteCount($voteTypes.find((vt) => vt.name === vote.voteType), post)}
           </button>
         {/each}
       </div>
