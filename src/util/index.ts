@@ -20,7 +20,7 @@ const getVoteCount = (voteType: { name: any }, post: any) => {
     : 0;
 };
 
-const handleClickVote = async (e: any, voteTypeName: string, post: any, user: any, disableButtons: boolean) => {
+const handleClickVote = async (e: any, voteTypeName: string, post: any, user: any) => {
   const url = get(fetchUrl);
   e.stopPropagation();
   const res = await fetch(

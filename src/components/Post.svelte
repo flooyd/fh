@@ -58,7 +58,7 @@
       user: any,
     ) => {
       disableButtons = true;
-      await handleClickVote(e, voteType, post, user, disableButtons);
+      await handleClickVote(e, voteType, post, user);
       disableButtons = false;
     };
   
@@ -66,8 +66,6 @@
       const d = new Date(date);
       return d.toLocaleDateString() + " - " + d.toLocaleTimeString();
     };
-
-    console.log(post.votes);
   </script>
   
   <button id={post.id} class="post" on:click={handleClickPost} style={`${getStyle()}`}>
