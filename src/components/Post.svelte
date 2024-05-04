@@ -129,6 +129,10 @@
       margin-bottom: 10px;
       font-size: 15px;
     }
+
+    .content {
+      white-space: pre-wrap;
+    }
   
     .bottomRow {
       position: relative;
