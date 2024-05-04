@@ -43,14 +43,17 @@
     $users = data;
   };
 
-  const fetchPostsAndVotes = async () => {
+  const fetchPosts = async () => {
     const postsRes = await fetch(`${$fetchUrl}/posts`, {
       headers: {
         Authorization: `Bearer ${$user.token}`,
       },
     });
     const postsData = await postsRes.json();
-    await getVotes(postsData);
+    postsData.forEach((post: any) => {
+      post.votes = [];
+    });
+    $posts = postsData;
   };
 
   const fetchVoteTypes = async () => {
@@ -61,9 +64,12 @@
 
   const init = async () => {
     if (!$user) return;
-    await fetchVoteTypes();
+    await fetchPosts();
     await fetchUsers();
-    await fetchPostsAndVotes();
+    ready = true;
+    await fetchVoteTypes();
+    await getVotes($posts);
+    
     if (window.location.pathname.includes("/viewPost/")) {
       const postId = window.location.pathname.split("/viewPost/")[1];
       $currentPost = $posts.find((post: any) => post.id === parseInt(postId));
