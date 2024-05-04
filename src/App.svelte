@@ -66,9 +66,9 @@
     if (!$user) return;
     await fetchPosts();
     await fetchUsers();
-    ready = true;
     await fetchVoteTypes();
     await getVotes($posts);
+    ready = true;
     
     if (window.location.pathname.includes("/viewPost/")) {
       const postId = window.location.pathname.split("/viewPost/")[1];
