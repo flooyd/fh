@@ -71,8 +71,6 @@
       if($currentPost) return content;
       return content.length > 100 ? content.slice(0, 100) + '...' : content;
     };
-
-    console.log(post);
   </script>
   
   <button id={post.id} class='post' on:click={handleClickPost} style={`${getStyle()}`}>

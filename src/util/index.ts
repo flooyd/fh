@@ -77,4 +77,17 @@ const toggleEmojiDrawer = (e: any, post: any) => {
   currentPost.update(currentPost => post);
 }
 
-export { getAuthorName, getAuthorImageSrc, getVoteCount, toggleEmojiDrawer, handleClickVote, deletePost }
+const fetchComments = async (post: any) => {
+  const url = get(fetchUrl);
+  const res = await fetch(`${url}/comments/${post.id}`, {
+    headers: {
+      Authorization: `Bearer ${get(user).token}`,
+    },
+  });
+  const data = await res.json();
+  post.comments = data;
+  currentPost.update(currentPost => post);
+  posts.update(posts => posts);
+}
+
+export { getAuthorName, getAuthorImageSrc, getVoteCount, toggleEmojiDrawer, handleClickVote, deletePost, fetchComments }
