@@ -1,14 +1,14 @@
 <script>
-import {users} from "../stores";
+import {users} from '../stores';
 </script>
 
-<div class="users">
+<div class='users'>
     {#each $users as user}
-        <div class="user">
+        <div class='user'>
                 <p class='displayName'>{user.displayName}</p>
                 <p>{user.bio}</p>
         {#if user.image}
-            <img src={user.image} alt="profile" />
+            <img src={user.image} alt='profile' />
         {/if}
         </div>
     {/each}

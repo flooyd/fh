@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang='ts'>
     import {
       getAuthorImageSrc,
       getAuthorName,
@@ -6,9 +6,9 @@
       toggleEmojiDrawer,
       handleClickVote,
       deletePost,
-    } from "../util";
-    import { users, voteTypes, user, page, currentPost } from "../stores";
-    import EmojiDrawer from "./EmojiDrawer.svelte";
+    } from '../util';
+    import { users, voteTypes, user, page, currentPost } from '../stores';
+    import EmojiDrawer from './EmojiDrawer.svelte';
   
     export let post: any;
     export let viewPost = false;
@@ -18,12 +18,12 @@
       if (viewPost) return;
       window.history.pushState(
         `/viewPost/${post.id}`,
-        "",
+        '',
         `/viewPost/${post.id}`,
       );
-      $page = "viewPost";
+      $page = 'viewPost';
       $currentPost = post;
-      document.title = "Forum House - " + post.title;
+      document.title = 'Forum House - ' + post.title;
     };
   
     const handleClickDelete = async (e: { stopPropagation: () => void }) => {
@@ -36,17 +36,17 @@
     const handleClickEdit = () => {
       window.history.pushState(
         `/editPost/${post.id}`,
-        "",
+        '',
         `/editPost/${post.id}`,
       );
-      $page = "editPost";
+      $page = 'editPost';
       $currentPost = post;
-      document.title = "Forum House - Edit Post";
+      document.title = 'Forum House - Edit Post';
     };
   
     const getStyle = () => {
       if (viewPost) {
-        return "cursor: default";
+        return 'cursor: default';
       }
       return {};
     };
@@ -64,31 +64,36 @@
   
     const getDateString = (date: string | number | Date) => {
       const d = new Date(date);
-      return d.toLocaleDateString() + " - " + d.toLocaleTimeString();
+      return d.toLocaleDateString() + ' - ' + d.toLocaleTimeString();
+    };
+
+    const getShortenedContent = (content: string) => {
+      if($currentPost) return content;
+      return content.length > 100 ? content.slice(0, 100) + '...' : content;
     };
 
     console.log(post);
   </script>
   
-  <button id={post.id} class="post" on:click={handleClickPost} style={`${getStyle()}`}>
-    <div class="author">
-      <div class="authorInfo">
-        <img src={getAuthorImageSrc($users, post)} alt="author" />
+  <button id={post.id} class='post' on:click={handleClickPost} style={`${getStyle()}`}>
+    <div class='author'>
+      <div class='authorInfo'>
+        <img src={getAuthorImageSrc($users, post)} alt='author' />
         {getAuthorName($users, post)}
       </div>
-      <div class="dates">
-        <div class="createdAt">Created: {getDateString(post.createdAt)}</div>
-        <div class="updatedAt">Last Updated: {getDateString(post.updatedAt)}</div>
+      <div class='dates'>
+        <div class='createdAt'>Created: {getDateString(post.createdAt)}</div>
+        <div class='updatedAt'>Last Updated: {getDateString(post.updatedAt)}</div>
       </div>
     </div>
     <h2>{post.title}</h2>
-    <div class="content">{post.content}</div>
-    <div class="bottomRow">
+    <div class='content'>{getShortenedContent(post.content)}</div>
+    <div class='bottomRow'>
       {#if post.showDrawer}
         <EmojiDrawer {post} />
       {/if}
-      <div class="voteButtons">
-        <button class="emojiButton" on:click={(e) => toggleEmojiDrawer(e, post)}
+      <div class='voteButtons'>
+        <button class='emojiButton' on:click={(e) => toggleEmojiDrawer(e, post)}
           >:)</button
         >
         {#each post.votes as vote}
@@ -99,9 +104,9 @@
         {/each}
       </div>
       {#if $user && $user.id === post.authorId}
-        <div class="options">
-          <button class="editButton" on:click={handleClickEdit}>Edit</button>
-          <button class="deleteButton" on:click={handleClickDelete}>🗑️</button>
+        <div class='options'>
+          <button class='editButton' on:click={handleClickEdit}>Edit</button>
+          <button class='deleteButton' on:click={handleClickDelete}>🗑️</button>
         </div>
       {/if}
     </div></button

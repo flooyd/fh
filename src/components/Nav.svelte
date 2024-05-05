@@ -1,8 +1,8 @@
-<script lang="ts">
-  import { loginOrRegister, user, page, profileModalOpen } from "../stores";
+<script lang='ts'>
+  import { loginOrRegister, user, page, profileModalOpen, currentPost } from '../stores';
 
   const handleClickLogin = () => {
-    $loginOrRegister = "login";
+    $loginOrRegister = 'login';
   };
 
   const handleClickUser = () => {
@@ -10,20 +10,21 @@
   };
 
   const handleClickTitle = () => {
-    if ($page === "posts") return;
-    window.history.pushState("posts", "", "/");
-    $page = "posts";
+    if ($page === 'posts') return;
+    window.history.pushState('posts', '', '/');
+    $page = 'posts';
+    $currentPost = null;
   };
 
   const handleClickUsers = () => {
-    if ($page === "users") return;
-    window.history.pushState("users", "", "/users");
-    $page = "users";
+    if ($page === 'users') return;
+    window.history.pushState('users', '', '/users');
+    $page = 'users';
   };
 </script>
 
 <nav>
-  <button class="title" on:click={handleClickTitle}>Forum House</button>
+  <button class='title' on:click={handleClickTitle}>Forum House</button>
   {#if !$user}
     <button on:click={handleClickLogin}>Login</button>
   {/if}
@@ -44,11 +45,11 @@
     background-color: #333;
     color: white;
     border-bottom: 3px solid white;
-    font-family: "Quattrocento", serif;
+    font-family: 'Quattrocento', serif;
   }
 
   button {
-    font-family: "Quattrocento", serif;
+    font-family: 'Quattrocento', serif;
   }
 
   button:hover {

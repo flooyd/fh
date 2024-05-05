@@ -1,77 +1,75 @@
 <script>
-  import { onMount } from "svelte";
-  import { profileModalOpen, user, fetchUrl, refresh, page, currentPost } from "../stores";
-  import { fly } from "svelte/transition";
+  import {
+    profileModalOpen,
+    user,
+    fetchUrl,
+    refresh,
+    page,
+    currentPost,
+  } from '../stores';
 
-  let displayName = $user.displayName || "";
-  let image = $user.image || "";
-  let bio = $user.bio || "";
-  let ready = false;
-
-  onMount(() => {
-    ready = true;
-  });
+  let displayName = $user.displayName || '';
+  let image = $user.image || '';
+  let bio = $user.bio || '';
 </script>
 
-{#if ready}
-  <button transition:fly={{ x: 20 }} class="modal" on:click|stopPropagation>
-    <form
-      on:submit|preventDefault={async () => {
-        const userObj = {
-          displayName,
-          image,
-          bio,
-          id: $user.id,
-        };
-        const res = await fetch(`${$fetchUrl}/users`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${$user.token}`,
-          },
-          body: JSON.stringify({ user: userObj }),
-        });
+<button class='modal' on:click|stopPropagation>
+  <form
+    on:submit|preventDefault={async () => {
+      const userObj = {
+        displayName,
+        image,
+        bio,
+        id: $user.id,
+      };
+      const res = await fetch(`${$fetchUrl}/users`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${$user.token}`,
+        },
+        body: JSON.stringify({ user: userObj }),
+      });
 
-        const data = await res.json();
-        $user = data.user;
-        localStorage.setItem("user", JSON.stringify($user));
-        $profileModalOpen = false;
-        $refresh = $refresh + 1;
-      }}
-    >
-      <h1>Edit Profile</h1>
-      {#if image}
-        <!-- svelte-ignore a11y-img-redundant-alt -->
-        <img src={image} alt="profile image" />
-      {/if}
-      <label for="displayName">Display Name</label>
-      <input type="text" id="displayName" bind:value={displayName} required />
-      <label for="image">Image</label>
-      <input type="text" id="image" bind:value={image} />
-      <label for="bio">Bio</label>
-      <textarea id="bio" bind:value={bio}></textarea>
-      <button type="submit">Save</button>
-    </form>
+      const data = await res.json();
+      $user = data.user;
+      localStorage.setItem('user', JSON.stringify($user));
+      $profileModalOpen = false;
+      $refresh = $refresh + 1;
+    }}
+  >
+    <h1>Edit Profile</h1>
+    {#if image}
+      <!-- svelte-ignore a11y-img-redundant-alt -->
+      <img src={image} alt='profile image' />
+    {/if}
+    <label for='displayName'>Display Name</label>
+    <input type='text' id='displayName' bind:value={displayName} required />
+    <label for='image'>Image</label>
+    <input type='text' id='image' bind:value={image} />
+    <label for='bio'>Bio</label>
+    <textarea id='bio' bind:value={bio}></textarea>
+    <button type='submit'>Save</button>
+  </form>
 
-    <form
-      class="logout"
-      on:submit|preventDefault={async () => {
-        localStorage.removeItem("user");
-        $user = null;
-        $profileModalOpen = false;
-        $page = "posts";
-        $currentPost = null;
+  <form
+    class='logout'
+    on:submit|preventDefault={async () => {
+      localStorage.removeItem('user');
+      $user = null;
+      $profileModalOpen = false;
+      $page = 'posts';
+      $currentPost = null;
       const windowState = {
         title: 'Forum House',
         url: '/',
       };
       window.history.pushState(windowState, 'Forum House', windowState.url);
-  }}
-    >
-      <button type="submit">Logout</button>
-    </form>
-  </button>
-{/if}
+    }}
+  >
+    <button type='submit'>Logout</button>
+  </form>
+</button>
 
 <style>
   .modal {

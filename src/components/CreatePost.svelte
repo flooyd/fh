@@ -1,12 +1,10 @@
-<script lang="ts">
-  import { fly } from "svelte/transition";
-  import { page, refresh, user, fetchUrl } from "../stores";
-  import { onMount } from "svelte";
-
+<script lang='ts'>
+  import { page, refresh, user, fetchUrl } from '../stores';
+  
   export let post: any = null;
   export let isEdit = false;
-  let title = post ? post.title : "";
-  let content = post ? post.content : "";
+  let title = post ? post.title : '';
+  let content = post ? post.content : '';
   let disabled = false;
 
   const handleClickSubmit = async (e: { preventDefault: () => void }) => {
@@ -21,9 +19,9 @@
 
   const createPost = async () => {
     const res = await fetch(`${$fetchUrl}/posts`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${$user.token}`,
       },
       body: JSON.stringify({
@@ -35,17 +33,17 @@
       }),
     });
     const data = await res.json();
-    title = "";
-    content = "";
+    title = '';
+    content = '';
     $refresh = $refresh + 1;
-    $page = "posts";
+    $page = 'posts';
   };
 
   const editPost = async () => {
     const res = await fetch(`${$fetchUrl}/posts/${post.id}`, {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${$user.token}`,
       },
       body: JSON.stringify({
@@ -56,27 +54,27 @@
       }),
     });
     const data = await res.json();
-    title = "";
-    content = "";
+    title = '';
+    content = '';
     $refresh = $refresh + 1;
-    $page = "posts";
+    $page = 'posts';
   };
 </script>
 
 <div>
-  <div class="toolbar">
-    <h1>{isEdit ? "Edit" : "Create"}</h1>
+  <div class='toolbar'>
+    <h1>{isEdit ? 'Edit' : 'Create'}</h1>
   </div>
   <form on:submit={handleClickSubmit}>
     <label>
       Title
-      <input type="text" bind:value={title} />
+      <input type='text' bind:value={title} />
     </label>
     <label>
       Content
       <textarea bind:value={content}></textarea>
     </label>
-    <button type="submit" {disabled}>Submit</button>
+    <button type='submit' {disabled}>Submit</button>
   </form>
 </div>
 
