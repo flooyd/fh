@@ -14,7 +14,7 @@
     <h1>Posts</h1>
     <button on:click={() => handleClickCreatePost()}>Create Post</button>
   </div>
-  <div>
+  <div class='posts'>
     {#each $posts as post}
       <Post {post} />
     {/each}
@@ -26,7 +26,17 @@
     display: flex;
     gap: 10px;
     align-items: center;
-    margin-bottom: 20px;
+    position: fixed;
+    top: 55.4px;
+    z-index: 2;
+    background: #333;
+    width: calc(100% - 40px);
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .posts {
+    margin-top: 34.2px;
   }
 
   button {
